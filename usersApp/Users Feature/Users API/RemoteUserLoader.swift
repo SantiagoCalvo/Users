@@ -23,17 +23,22 @@ public class RemoteUserLoader: UsersLoader {
     public typealias Result = LoadUsersResult
     
     public func load(completion: @escaping (Result) -> Void)  {
-        client.get(from: url) { response in
+        client.get(from: url) { [weak self] response in
+            guard let self = self else {return}
             switch response {
             case .failure:
                 completion(.failure(Error.serverError))
             case let .success((data, httpResponse)):
-                if httpResponse.statusCode == 200, let users = try? JSONDecoder().decode([User].self, from: data) {
-                    completion(.success(users))
-                }  else {
-                    completion(.failure(Error.serverError))
-                }
+                completion(self.map(data, httpResponse))
             }
+        }
+    }
+    
+    private func map(_ data: Data, _ httpResponse: HTTPURLResponse) -> Result {
+        if httpResponse.statusCode == 200, let users = try? JSONDecoder().decode([User].self, from: data) {
+            return .success(users)
+        }  else {
+            return .failure(Error.serverError)
         }
     }
 }
