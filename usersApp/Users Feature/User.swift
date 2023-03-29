@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct User {
+public struct User {
     let id: UUID
     let name: String
     let phone: String

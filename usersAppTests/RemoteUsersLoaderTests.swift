@@ -6,11 +6,7 @@
 //
 
 import XCTest
-
-//public enum HTTPClientResult {
-//    case success(Data, HTTPURLResponse)
-//    case failure(Error)
-//}
+import usersApp
 
 typealias HTTPClientResult = Swift.Result<(Data, HTTPURLResponse), Error>
 
@@ -26,6 +22,12 @@ class RemoteUserLoader {
         self.url = url
         self.client = client
     }
+    
+    public typealias Result = LoadUsersResult
+    
+    public func load(completion: @escaping (Result) -> Void)  {
+        client.get(from: url) { _ in }
+    }
 }
 
 class RemoteUsersLoaderTests: XCTestCase {
@@ -34,6 +36,15 @@ class RemoteUsersLoaderTests: XCTestCase {
         let (_, client) = makeSUT()
         
         XCTAssertTrue(client.requestedURLs.isEmpty)
+    }
+    
+    func test_load_requestsDataFromURL() {
+        let url = URL(string: "https://any-url.com")!
+        let (sut, client) = makeSUT(url: url)
+        
+        sut.load { _ in }
+        
+        XCTAssertEqual([url], client.requestedURLs)
     }
     
     //MARK: - Helpers
