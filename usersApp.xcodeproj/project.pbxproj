@@ -16,6 +16,8 @@
 		9A0DA50D29D3C154000BBE8B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0DA50C29D3C154000BBE8B /* User.swift */; };
 		9A0DA50F29D3C24B000BBE8B /* RemoteUsersLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0DA50E29D3C24B000BBE8B /* RemoteUsersLoaderTests.swift */; };
 		9A0DA51229D3C687000BBE8B /* UsersLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0DA51129D3C687000BBE8B /* UsersLoader.swift */; };
+		9A0DA51529D3D60A000BBE8B /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0DA51429D3D60A000BBE8B /* HTTPClient.swift */; };
+		9A0DA51729D3D627000BBE8B /* RemoteUserLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0DA51629D3D627000BBE8B /* RemoteUserLoader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +43,8 @@
 		9A0DA50C29D3C154000BBE8B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		9A0DA50E29D3C24B000BBE8B /* RemoteUsersLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteUsersLoaderTests.swift; sourceTree = "<group>"; };
 		9A0DA51129D3C687000BBE8B /* UsersLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersLoader.swift; sourceTree = "<group>"; };
+		9A0DA51429D3D60A000BBE8B /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
+		9A0DA51629D3D627000BBE8B /* RemoteUserLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteUserLoader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,10 +109,20 @@
 		9A0DA50B29D3C139000BBE8B /* Users Feature */ = {
 			isa = PBXGroup;
 			children = (
+				9A0DA51329D3D5FC000BBE8B /* Users API */,
 				9A0DA50C29D3C154000BBE8B /* User.swift */,
 				9A0DA51129D3C687000BBE8B /* UsersLoader.swift */,
 			);
 			path = "Users Feature";
+			sourceTree = "<group>";
+		};
+		9A0DA51329D3D5FC000BBE8B /* Users API */ = {
+			isa = PBXGroup;
+			children = (
+				9A0DA51429D3D60A000BBE8B /* HTTPClient.swift */,
+				9A0DA51629D3D627000BBE8B /* RemoteUserLoader.swift */,
+			);
+			path = "Users API";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -215,6 +229,8 @@
 			files = (
 				9A0DA51229D3C687000BBE8B /* UsersLoader.swift in Sources */,
 				9A0DA50D29D3C154000BBE8B /* User.swift in Sources */,
+				9A0DA51729D3D627000BBE8B /* RemoteUserLoader.swift in Sources */,
+				9A0DA51529D3D60A000BBE8B /* HTTPClient.swift in Sources */,
 				9A0DA4EE29D3C0B4000BBE8B /* ViewController.swift in Sources */,
 				9A0DA4EA29D3C0B4000BBE8B /* AppDelegate.swift in Sources */,
 				9A0DA4EC29D3C0B4000BBE8B /* SceneDelegate.swift in Sources */,
