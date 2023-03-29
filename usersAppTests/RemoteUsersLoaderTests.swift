@@ -35,8 +35,8 @@ class RemoteUserLoader {
             case .failure:
                 completion(.failure(Error.serverError))
             case let .success((data, httpResponse)):
-                if httpResponse.statusCode == 200, let _ = try? JSONDecoder().decode([User?].self, from: data) {
-                    completion(.success([]))
+                if httpResponse.statusCode == 200, let users = try? JSONDecoder().decode([User].self, from: data) {
+                    completion(.success(users))
                 }  else {
                     completion(.failure(Error.serverError))
                 }
@@ -112,6 +112,22 @@ class RemoteUsersLoaderTests: XCTestCase {
         })
     }
     
+    func test_load_deliversItemsOn200HTTPResponseWithJSONItems() {
+        let (sut, client) = makeSUT()
+        
+        let user1 = makeUser(id: UUID(), name: "santiago calvo", phone: "+57 316128712")
+
+        
+        let user2 = makeUser(id: UUID(), name: "Angie pineda", phone: "+57 314329382")
+        
+        let users = [user1.model, user2.model]
+        
+        expect(sut, toCompleteWith: .success(users), when: {
+            let json = makeUsersJSON([user1.json, user2.json])
+            client.complete(withStatusCode: 200, data: json)
+        })
+    }
+    
     //MARK: - Helpers
     private func makeSUT(url: URL = URL(string: "https://a-url.com")!, file: StaticString = #file, line: UInt = #line) -> (sut: RemoteUserLoader, client: HTTPClientSpy) {
         let client = HTTPClientSpy()
@@ -144,6 +160,18 @@ class RemoteUsersLoaderTests: XCTestCase {
     
     private func makeUsersJSON(_ users: [[String: Any]]) -> Data {
         return try! JSONSerialization.data(withJSONObject: users)
+    }
+    
+    private func makeUser(id: UUID, name: String, phone: String) -> (model: User, json: [String: Any]) {
+        let item = User(id: id, name: name, phone: phone)
+        
+        let json = [
+            "id": id.uuidString,
+            "name": name,
+            "phone": phone,
+        ].compactMapValues { $0 }
+        
+        return (item, json)
     }
     
     private class HTTPClientSpy: HTTPClient {
