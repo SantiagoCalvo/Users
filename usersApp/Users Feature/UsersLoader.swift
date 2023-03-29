@@ -11,6 +11,6 @@ import Foundation
 
 public typealias LoadUsersResult = Swift.Result<[User], Error>
 
-public protocol FeedLoader {
+public protocol UsersLoader {
     func load(completion: @escaping (LoadUsersResult) -> Void)
 }

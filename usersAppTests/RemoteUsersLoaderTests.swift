@@ -92,13 +92,13 @@ class RemoteUsersLoaderTests: XCTestCase {
     }
     
     //MARK: - Helpers
-    private func makeSUT(url: URL = URL(string: "https://a-url.com")!, file: StaticString = #file, line: UInt = #line) -> (sut: RemoteUserLoader, client: HTTPClientSpy) {
+    private func makeSUT(url: URL = URL(string: "https://a-url.com")!, file: StaticString = #file, line: UInt = #line) -> (sut: UsersLoader, client: HTTPClientSpy) {
         let client = HTTPClientSpy()
         let sut = RemoteUserLoader(url: url, client: client)
         return (sut, client)
     }
     
-    private func expect(_ sut: RemoteUserLoader, toCompleteWith expectedResult: RemoteUserLoader.Result, when action: () -> Void, file: StaticString = #file, line: UInt = #line) {
+    private func expect(_ sut: UsersLoader, toCompleteWith expectedResult: RemoteUserLoader.Result, when action: () -> Void, file: StaticString = #file, line: UInt = #line) {
         let exp = expectation(description: "Wait for load completion")
         
         sut.load { receivedResult in
