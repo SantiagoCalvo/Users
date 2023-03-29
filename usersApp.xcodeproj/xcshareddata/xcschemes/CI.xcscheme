@@ -33,20 +33,20 @@
             testExecutionOrdering = "random">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9A0DA50129D3C0F3000BBE8B"
-               BuildableName = "usersAppTests.xctest"
-               BlueprintName = "usersAppTests"
+               BlueprintIdentifier = "9A0DA52329D3E338000BBE8B"
+               BuildableName = "usersAppEndToEndTests.xctest"
+               BlueprintName = "usersAppEndToEndTests"
                ReferencedContainer = "container:usersApp.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
             skipped = "NO"
-            parallelizable = "YES">
+            testExecutionOrdering = "random">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9A0DA52329D3E338000BBE8B"
-               BuildableName = "usersAppEndToEndTests.xctest"
-               BlueprintName = "usersAppEndToEndTests"
+               BlueprintIdentifier = "9A0DA50129D3C0F3000BBE8B"
+               BuildableName = "usersAppTests.xctest"
+               BlueprintName = "usersAppTests"
                ReferencedContainer = "container:usersApp.xcodeproj">
             </BuildableReference>
          </TestableReference>
