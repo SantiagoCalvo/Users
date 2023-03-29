@@ -34,11 +34,12 @@ class RemoteUserLoader {
             switch response {
             case .failure:
                 completion(.failure(Error.serverError))
-            case let .success((_, httpResponse)):
-                if httpResponse.statusCode != 200 {
+            case let .success((data, httpResponse)):
+                if httpResponse.statusCode == 200, let _ = try? JSONDecoder().decode([User?].self, from: data) {
+                    completion(.success([]))
+                }  else {
                     completion(.failure(Error.serverError))
                 }
-                else {break}
             }
         }
     }
@@ -91,6 +92,15 @@ class RemoteUsersLoaderTests: XCTestCase {
                 client.complete(withStatusCode: code, data: json, at: index)
             })
         }
+    }
+    
+    func test_load_deliversErrorOn200HTTPResponseWithInvalidJSON() {
+        let (sut, client) = makeSUT()
+        
+        expect(sut, toCompleteWith: .failure(RemoteUserLoader.Error.serverError), when: {
+            let invalidJSON = Data("invalid json".utf8)
+            client.complete(withStatusCode: 200, data: invalidJSON)
+        })
     }
     
     //MARK: - Helpers

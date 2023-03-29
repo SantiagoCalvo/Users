@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct User: Equatable {
+public struct User: Decodable, Equatable {
     let id: UUID
     let name: String
     let phone: String
