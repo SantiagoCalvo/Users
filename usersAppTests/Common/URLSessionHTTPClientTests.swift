@@ -19,8 +19,10 @@ class URLSessionHTTPClient: HTTPClient {
     private struct UnexpectedValuesRepresentation: Error {}
     
     func get(from url: URL, completion: @escaping (usersApp.HTTPClientResult) -> Void) {
-        session.dataTask(with: url) { _, _, _ in
-            
+        session.dataTask(with: url) { _, _, error in
+            if let error = error {
+                completion(.failure(error))
+            }
         }.resume()
     }
 }
@@ -53,6 +55,15 @@ class URLSessionHTTPClientTests: XCTestCase {
         
         wait(for: [exp], timeout: 1.0)
     }
+    
+    func test_getFromURL_failsOnRequestError() {
+        let requestError = anyNSError()
+        
+        let receivedError = resultErrorFor(data: nil, response: nil, error: requestError) as? NSError
+        
+        XCTAssertEqual(receivedError?.domain, requestError.domain)
+        XCTAssertEqual(receivedError?.code, requestError.code)
+    }
 
     // MARK: - Helpers
     
@@ -62,6 +73,17 @@ class URLSessionHTTPClientTests: XCTestCase {
         return sut
     }
     
+    private func resultErrorFor(data: Data?, response: URLResponse?, error: Error?, file: StaticString = #file, line: UInt = #line) -> Error? {
+        let result = resultFor(data: data, response: response, error: error, file: file, line: line)
+        
+        switch result {
+        case let .failure(error):
+            return error
+        default:
+            XCTFail("Expected failure, got \(result) instead", file: file, line: line)
+            return nil
+        }
+    }
     
     private func resultFor(data: Data?, response: URLResponse?, error: Error?, file: StaticString = #file, line: UInt = #line) -> HTTPClientResult {
         URLProtocolStub.stub(data: data, response: response, error: error)
