@@ -79,9 +79,15 @@ final class UsersViewController: UIViewController, UITableViewDelegate, UITableV
         refreshControl.beginRefreshing()
         loader.load { [weak self] result in
             guard let self = self else { return }
-            self.users = (try? result.get()) ?? []
-            self.mainTableView.reloadData()
-            self.refreshControl.endRefreshing()
+            
+            switch result {
+            case let .success(users):
+                self.users = users
+                self.mainTableView.reloadData()
+                self.refreshControl.endRefreshing()
+            case .failure:
+                break
+            }
         }
     }
     
@@ -158,6 +164,19 @@ class UsersViewControllerTests: XCTestCase {
         assertThat(sut, isRendering: [user0, user1])
     }
     
+    func test_loaduserCompletion_doesNotAlterCurrentRenderingStateOnError() {
+        let user0 = User(id: 1, name: "a name", phone: "1234234", email: "any@email.com")
+        let (sut, loader) = makeSUT()
+
+        sut.loadViewIfNeeded()
+        loader.completeUserLoading(with: [user0], at: 0)
+        assertThat(sut, isRendering: [user0])
+
+        sut.simulateUserInitiatedFeedReload()
+        loader.completeUserLoadingWithError(at: 1)
+        assertThat(sut, isRendering: [user0])
+    }
+    
     
         
     //MARK: - helpers
@@ -206,6 +225,10 @@ class UsersViewControllerTests: XCTestCase {
         
         func completeUserLoading(with users: [User] = [], at Index: Int = 0) {
             completions[Index](.success(users))
+        }
+        
+        func completeUserLoadingWithError(at index: Int = 0) {
+            completions[index](.failure(NSError(domain: "error", code: 0)))
         }
     }
 }
