@@ -30,7 +30,9 @@ class UsersViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         refreshControl.addTarget(self, action: #selector(load), for: .valueChanged)
+        refreshControl.beginRefreshing()
         load()
     }
     
@@ -62,6 +64,14 @@ class UsersViewControllerTests: XCTestCase {
         sut.refreshControl.simulatePullToRefresh()
         
         XCTAssertEqual(loader.loadCallCount, 2)
+    }
+    
+    func test_viewDidLoad_showsLoadingIndicator() {
+        let (sut, _) = makeSUT()
+
+        sut.loadViewIfNeeded()
+
+        XCTAssertEqual(sut.refreshControl.isRefreshing, true)
     }
     
     //MARK: - helpers
