@@ -48,7 +48,8 @@ final class usersAPIEndToEndTests: XCTestCase {
         return User(
             id: id(at: index),
             name: name(at: index),
-            phone: phone(at: index)
+            phone: phone(at: index),
+            email: email(at: index)
         )
     }
     
@@ -67,6 +68,13 @@ final class usersAPIEndToEndTests: XCTestCase {
         [
             "1-770-736-8031 x56442",
             "010-692-6593 x09125"
+        ][index]
+    }
+    
+    private func email(at index: Int) -> String {
+        [
+            "Sincere@april.biz",
+            "Shanna@melissa.tv"
         ][index]
     }
 }

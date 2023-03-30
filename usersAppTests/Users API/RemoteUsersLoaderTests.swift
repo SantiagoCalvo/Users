@@ -78,10 +78,10 @@ class RemoteUsersLoaderTests: XCTestCase {
     func test_load_deliversItemsOn200HTTPResponseWithJSONItems() {
         let (sut, client) = makeSUT()
         
-        let user1 = makeUser(id: 1, name: "santiago calvo", phone: "+57 316128712")
+        let user1 = makeUser(id: 1, name: "santiago calvo", phone: "+57 316128712", email: "any@yopmail.com")
 
         
-        let user2 = makeUser(id: 2, name: "Angie pineda", phone: "+57 314329382")
+        let user2 = makeUser(id: 2, name: "Angie pineda", phone: "+57 314329382", email: "any@yopmail.com")
         
         let users = [user1.model, user2.model]
         
@@ -127,13 +127,14 @@ class RemoteUsersLoaderTests: XCTestCase {
         return try! JSONSerialization.data(withJSONObject: users)
     }
     
-    private func makeUser(id: Int, name: String, phone: String) -> (model: User, json: [String: Any]) {
-        let item = User(id: id, name: name, phone: phone)
+    private func makeUser(id: Int, name: String, phone: String, email: String) -> (model: User, json: [String: Any]) {
+        let item = User(id: id, name: name, phone: phone, email: email)
         
         let json = [
             "id": id,
             "name": name,
             "phone": phone,
+            "email": email
         ].compactMapValues { $0 }
         
         return (item, json)
