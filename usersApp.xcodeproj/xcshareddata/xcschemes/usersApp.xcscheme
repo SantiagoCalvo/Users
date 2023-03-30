@@ -39,17 +39,6 @@
                ReferencedContainer = "container:usersApp.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9A0DA52329D3E338000BBE8B"
-               BuildableName = "usersAppEndToEndTests.xctest"
-               BlueprintName = "usersAppEndToEndTests"
-               ReferencedContainer = "container:usersApp.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
