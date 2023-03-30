@@ -17,6 +17,12 @@ class UsersViewController: UIViewController {
         return control
     }()
     
+    let mainTableView: UITableView = {
+        let table = UITableView(frame: .zero)
+        table.translatesAutoresizingMaskIntoConstraints = false
+        return table
+    }()
+    
     let loader: UsersLoader
     
     init(loader: UsersLoader) {
@@ -31,49 +37,62 @@ class UsersViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(load), for: .valueChanged)
-        refreshControl.beginRefreshing()
+        mainTableView.addSubview(refreshControl)
+        
         load()
     }
     
     @objc private func load() {
-        loader.load { _ in }
+        refreshControl.beginRefreshing()
+        loader.load { [weak self] _ in
+            guard let self = self else { return }
+            self.refreshControl.endRefreshing()
+        }
     }
 }
 
 class UsersViewControllerTests: XCTestCase {
     
-    func test_init_doesNotLoadUsers() {
-        let (_, loader) = makeSUT()
+    func test_loadUserActions_requestUsersFromLoader() {
+        let (sut, loader) = makeSUT()
         
         XCTAssertEqual(loader.loadCallCount, 0)
-    }
-    
-    func test_viewDidLoad_LoadsUsers() {
-        let (sut, loader) = makeSUT()
         
         sut.loadViewIfNeeded()
         
         XCTAssertEqual(loader.loadCallCount, 1)
-    }
-    
-    func test_pullToRefresh_loadsFeed() {
-        let (sut, loader) = makeSUT()
-        sut.loadViewIfNeeded()
         
-        sut.refreshControl.simulatePullToRefresh()
+        sut.simulateUserInitiatedFeedReload()
         
         XCTAssertEqual(loader.loadCallCount, 2)
+        
+        sut.simulateUserInitiatedFeedReload()
+        
+        XCTAssertEqual(loader.loadCallCount, 3)
     }
     
-    func test_viewDidLoad_showsLoadingIndicator() {
-        let (sut, _) = makeSUT()
+    func test_loadingUserIndicator_isVisibleWhileLoadingUsers() {
+        let (sut, loader) = makeSUT()
 
         sut.loadViewIfNeeded()
 
-        XCTAssertEqual(sut.refreshControl.isRefreshing, true)
+        XCTAssertTrue(sut.isShowingLoadingIndicator)
+        
+        loader.completeUserLoading(at: 0)
+        
+        XCTAssertFalse(sut.isShowingLoadingIndicator)
+        
+        sut.simulateUserInitiatedFeedReload()
+        
+        XCTAssertTrue(sut.isShowingLoadingIndicator)
+        
+        loader.completeUserLoading(at: 1)
+        
+        XCTAssertFalse(sut.isShowingLoadingIndicator)
     }
-    
+        
     //MARK: - helpers
     
     private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: UsersViewController, loader: LoaderSpy) {
@@ -86,11 +105,29 @@ class UsersViewControllerTests: XCTestCase {
     
     private class LoaderSpy: UsersLoader {
         
-        var loadCallCount: Int = 0
+        private var completions = [(LoadUsersResult) -> Void]()
+        
+        var loadCallCount: Int {
+            return completions.count
+        }
         
         func load(completion: @escaping (usersApp.LoadUsersResult) -> Void) {
-            loadCallCount += 1
+            completions.append(completion)
         }
+        
+        func completeUserLoading(at Index: Int = 0) {
+            completions[Index](.success([]))
+        }
+    }
+}
+
+private extension UsersViewController {
+    func simulateUserInitiatedFeedReload() {
+        refreshControl.simulatePullToRefresh()
+    }
+    
+    var isShowingLoadingIndicator: Bool {
+        return refreshControl.isRefreshing == true
     }
 }
 
