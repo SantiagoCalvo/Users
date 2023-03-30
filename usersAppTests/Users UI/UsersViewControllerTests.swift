@@ -35,17 +35,13 @@ class UsersViewController: UIViewController {
 class UsersViewControllerTests: XCTestCase {
     
     func test_init_doesNotLoadUsers() {
-        let loader = LoaderSpy()
-        
-        _ = UsersViewController(loader: loader)
+        let (_, loader) = makeSUT()
         
         XCTAssertEqual(loader.loadCallCount, 0)
     }
     
     func test_viewDidLoad_LoadsUsers() {
-        let loader = LoaderSpy()
-        
-        let sut = UsersViewController(loader: loader)
+        let (sut, loader) = makeSUT()
         
         sut.loadViewIfNeeded()
         
@@ -53,6 +49,14 @@ class UsersViewControllerTests: XCTestCase {
     }
     
     //MARK: - helpers
+    
+    private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: UsersViewController, loader: LoaderSpy) {
+        let loader = LoaderSpy()
+        let sut = UsersViewController(loader: loader)
+        trackForMemoryLeaks(loader, file: file, line: line)
+        trackForMemoryLeaks(sut, file: file, line: line)
+        return (sut, loader)
+    }
     
     private class LoaderSpy: UsersLoader {
         
