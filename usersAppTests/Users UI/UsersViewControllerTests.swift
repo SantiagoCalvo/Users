@@ -9,7 +9,35 @@ import XCTest
 import usersApp
 import UIKit
 
-class UsersViewController: UIViewController {
+final class UserCell: UITableViewCell {
+    let nameLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let emailLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let phoneLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    func configure(with user: User) {
+        phoneLabel.text = user.phone
+        nameLabel.text = user.name
+        emailLabel.text = user.email
+    }
+}
+
+final class UsersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+        
+    private var users = [User]()
     
     let refreshControl: UIRefreshControl = {
         let control = UIRefreshControl(frame: .zero)
@@ -37,6 +65,9 @@ class UsersViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        mainTableView.delegate = self
+        mainTableView.dataSource = self
+        
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(load), for: .valueChanged)
         mainTableView.addSubview(refreshControl)
@@ -46,11 +77,25 @@ class UsersViewController: UIViewController {
     
     @objc private func load() {
         refreshControl.beginRefreshing()
-        loader.load { [weak self] _ in
+        loader.load { [weak self] result in
             guard let self = self else { return }
+            self.users = (try? result.get()) ?? []
+            self.mainTableView.reloadData()
             self.refreshControl.endRefreshing()
         }
     }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return users.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cellModel = users[indexPath.row]
+        let cell = UserCell()
+        cell.configure(with: cellModel)
+        return cell
+    }
+
 }
 
 class UsersViewControllerTests: XCTestCase {
@@ -92,6 +137,27 @@ class UsersViewControllerTests: XCTestCase {
         
         XCTAssertFalse(sut.isShowingLoadingIndicator)
     }
+    
+    func test_LoadUserCompletion_rendersSuccessfullyLoadedUsers() {
+        let user0 = User(id: 1, name: "a name", phone: "1234234", email: "any@email.com")
+        let user1 = User(id: 2, name: "a name", phone: "1234234", email: "any@email.com")
+        let (sut, loader) = makeSUT()
+
+        sut.loadViewIfNeeded()
+
+        loader.completeUserLoading(with: [user0], at: 0)
+
+        XCTAssertEqual(sut.numberOfRenderedUsers(), 1)
+        
+        assertThat(sut, hasViewConfiguredFor: user0, at: 0)
+        
+        sut.simulateUserInitiatedFeedReload()
+        loader.completeUserLoading(with: [user0, user1], at: 1)
+        XCTAssertEqual(sut.numberOfRenderedUsers(), 2)
+        
+        assertThat(sut, hasViewConfiguredFor: user0, at: 0)
+        assertThat(sut, hasViewConfiguredFor: user1, at: 1)
+    }
         
     //MARK: - helpers
     
@@ -101,6 +167,18 @@ class UsersViewControllerTests: XCTestCase {
         trackForMemoryLeaks(loader, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
         return (sut, loader)
+    }
+    
+    private func assertThat(_ sut: UsersViewController, hasViewConfiguredFor user: User, at index: Int, file: StaticString = #filePath, line: UInt = #line) {
+        let view = sut.usersView(at: index)
+        
+        guard let cell = view as? UserCell else {
+            return XCTFail("expected to have correct cell instance", file: file, line: line)
+        }
+        
+        XCTAssertEqual(cell.emailText, user.email, file: file, line: line)
+        XCTAssertEqual(cell.phoneText, user.phone, file: file, line: line)
+        XCTAssertEqual(cell.nameText, user.name, file: file, line: line)
     }
     
     private class LoaderSpy: UsersLoader {
@@ -115,8 +193,8 @@ class UsersViewControllerTests: XCTestCase {
             completions.append(completion)
         }
         
-        func completeUserLoading(at Index: Int = 0) {
-            completions[Index](.success([]))
+        func completeUserLoading(with users: [User] = [], at Index: Int = 0) {
+            completions[Index](.success(users))
         }
     }
 }
@@ -128,6 +206,30 @@ private extension UsersViewController {
     
     var isShowingLoadingIndicator: Bool {
         return refreshControl.isRefreshing == true
+    }
+    
+    func numberOfRenderedUsers() -> Int {
+        return mainTableView.numberOfRows(inSection: 0)
+    }
+    
+    func usersView(at row: Int = 0) -> UITableViewCell? {
+        let ds = mainTableView.dataSource
+        let index = IndexPath(row: row, section: 0)
+        return ds?.tableView(mainTableView, cellForRowAt: index)
+    }
+}
+
+private extension UserCell {
+    var nameText: String? {
+        return nameLabel.text
+    }
+    
+    var emailText: String? {
+        return emailLabel.text
+    }
+    
+    var phoneText: String? {
+        return phoneLabel.text
     }
 }
 
