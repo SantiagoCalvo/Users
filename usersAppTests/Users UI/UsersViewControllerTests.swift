@@ -80,14 +80,11 @@ final class UsersViewController: UIViewController, UITableViewDelegate, UITableV
         loader.load { [weak self] result in
             guard let self = self else { return }
             
-            switch result {
-            case let .success(users):
+            if let users = try? result.get() {
                 self.users = users
                 self.mainTableView.reloadData()
-                self.refreshControl.endRefreshing()
-            case .failure:
-                break
             }
+            self.refreshControl.endRefreshing()
         }
     }
     
@@ -139,7 +136,7 @@ class UsersViewControllerTests: XCTestCase {
         
         XCTAssertTrue(sut.isShowingLoadingIndicator)
         
-        loader.completeUserLoading(at: 1)
+        loader.completeUserLoadingWithError(at: 1)
         
         XCTAssertFalse(sut.isShowingLoadingIndicator)
     }
