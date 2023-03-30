@@ -149,15 +149,16 @@ class UsersViewControllerTests: XCTestCase {
 
         XCTAssertEqual(sut.numberOfRenderedUsers(), 1)
         
-        assertThat(sut, hasViewConfiguredFor: user0, at: 0)
+        assertThat(sut, isRendering: [user0])
         
         sut.simulateUserInitiatedFeedReload()
         loader.completeUserLoading(with: [user0, user1], at: 1)
         XCTAssertEqual(sut.numberOfRenderedUsers(), 2)
         
-        assertThat(sut, hasViewConfiguredFor: user0, at: 0)
-        assertThat(sut, hasViewConfiguredFor: user1, at: 1)
+        assertThat(sut, isRendering: [user0, user1])
     }
+    
+    
         
     //MARK: - helpers
     
@@ -167,6 +168,16 @@ class UsersViewControllerTests: XCTestCase {
         trackForMemoryLeaks(loader, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
         return (sut, loader)
+    }
+    
+    private func assertThat(_ sut: UsersViewController, isRendering users: [User], file: StaticString = #filePath, line: UInt = #line) {
+        guard sut.numberOfRenderedUsers() == users.count else {
+            return XCTFail("Expected \(users.count) images, got \(sut.numberOfRenderedUsers()) instead.", file: file, line: line)
+        }
+
+        users.enumerated().forEach { index, user in
+            assertThat(sut, hasViewConfiguredFor: user, at: index, file: file, line: line)
+        }
     }
     
     private func assertThat(_ sut: UsersViewController, hasViewConfiguredFor user: User, at index: Int, file: StaticString = #filePath, line: UInt = #line) {
