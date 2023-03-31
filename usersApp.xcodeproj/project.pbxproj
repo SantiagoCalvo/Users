@@ -157,10 +157,9 @@
 		9A0DA50B29D3C139000BBE8B /* Users Feature */ = {
 			isa = PBXGroup;
 			children = (
+				9A16852329D7A6E000CD496E /* Models */,
 				9A5E4CE829D6690100C710D1 /* Users UI */,
 				9A0DA51329D3D5FC000BBE8B /* Users API */,
-				9A0DA50C29D3C154000BBE8B /* User.swift */,
-				9A0DA51129D3C687000BBE8B /* UsersLoader.swift */,
 			);
 			path = "Users Feature";
 			sourceTree = "<group>";
@@ -168,6 +167,7 @@
 		9A0DA51329D3D5FC000BBE8B /* Users API */ = {
 			isa = PBXGroup;
 			children = (
+				9A0DA51129D3C687000BBE8B /* UsersLoader.swift */,
 				9A0DA51629D3D627000BBE8B /* RemoteUserLoader.swift */,
 			);
 			path = "Users API";
@@ -214,6 +214,21 @@
 			path = usersAppEndToEndTests;
 			sourceTree = "<group>";
 		};
+		9A16852329D7A6E000CD496E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				9A0DA50C29D3C154000BBE8B /* User.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		9A16852429D7A80E00CD496E /* Posts UI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Posts UI";
+			sourceTree = "<group>";
+		};
 		9A5E4CE829D6690100C710D1 /* Users UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -234,6 +249,7 @@
 		9A5E4CF029D68E1700C710D1 /* Posts Feature */ = {
 			isa = PBXGroup;
 			children = (
+				9A16852429D7A80E00CD496E /* Posts UI */,
 				9A5E4CF429D68E9C00C710D1 /* Models */,
 				9A5E4CF129D68E3600C710D1 /* Posts API */,
 			);
