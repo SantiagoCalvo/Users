@@ -7,8 +7,6 @@
 
 import Foundation
 
-import Foundation
-
 public typealias LoadUsersResult = Swift.Result<[User], Error>
 
 public protocol UsersLoader {
