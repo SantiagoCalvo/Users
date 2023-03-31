@@ -20,6 +20,9 @@ final class UsersViewController: UIViewController, UITableViewDelegate, UITableV
     let mainTableView: UITableView = {
         let table = UITableView(frame: .zero)
         table.translatesAutoresizingMaskIntoConstraints = false
+        table.rowHeight = UITableView.automaticDimension
+        table.estimatedRowHeight = 100
+        table.register(UserCell.self, forCellReuseIdentifier: UserCell.identifier)
         return table
     }()
     
@@ -37,10 +40,11 @@ final class UsersViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupView()
+        
         mainTableView.delegate = self
         mainTableView.dataSource = self
         
-        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(load), for: .valueChanged)
         mainTableView.addSubview(refreshControl)
         
@@ -74,10 +78,31 @@ final class UsersViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellModel = users[indexPath.row]
-        let cell = UserCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: UserCell.identifier, for: indexPath) as! UserCell
+        
         cell.configure(with: cellModel)
         return cell
     }
 
 }
 
+extension UsersViewController {
+    private func setupView() {
+        view.backgroundColor = .white
+        addsubviews()
+        setupConstraints()
+    }
+    
+    private func addsubviews() {
+        view.addSubview(mainTableView)
+    }
+    
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            mainTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            mainTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            mainTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            mainTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+}
