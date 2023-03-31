@@ -82,7 +82,31 @@ class UsersViewControllerTests: XCTestCase {
         assertThat(sut, isRendering: [user0])
     }
     
-    
+    func test_filterUsersByName_whenUsingSearchControl() {
+        let user0 = User(id: 1, name: "user", phone: "1234234", email: "any@email.com")
+        let user1 = User(id: 2, name: "ana", phone: "1234234", email: "any@email.com")
+        let (sut, loader) = makeSUT()
+
+        sut.loadViewIfNeeded()
+
+        loader.completeUserLoading(with: [user0, user1], at: 0)
+
+        XCTAssertEqual(sut.numberOfRenderedUsers(), 2)
+        
+        assertThat(sut, isRendering: [user0, user1])
+        
+        sut.searchUser(user0.name)
+        
+        assertThat(sut, isRendering: [user0])
+        
+        sut.searchUser("a")
+        
+        assertThat(sut, isRendering: [user1])
+        
+        sut.searchUser("")
+        
+        assertThat(sut, isRendering: [user0, user1])
+    }
         
     //MARK: - helpers
     
@@ -159,6 +183,10 @@ private extension UsersViewController {
     
     var errorView: Bool {
         return (presentedViewController as? UIAlertController) != nil ? true : false
+    }
+    
+    func searchUser(_ userName: String) {
+        searchController.searchBar.text = userName
     }
 }
 

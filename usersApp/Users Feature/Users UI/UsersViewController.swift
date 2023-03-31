@@ -9,7 +9,19 @@ import UIKit
 
 final class UsersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
-    private var users = [User]()
+    private var users = [User]() {
+        didSet {
+            usersFiltered = users
+        }
+    }
+    private var usersFiltered = [User]()
+    
+    lazy var searchController: UISearchController = {
+        let search = UISearchController(searchResultsController: nil)
+        search.searchBar.translatesAutoresizingMaskIntoConstraints = false
+        search.obscuresBackgroundDuringPresentation = false
+        return search
+    }()
     
     let refreshControl: UIRefreshControl = {
         let control = UIRefreshControl(frame: .zero)
@@ -48,6 +60,10 @@ final class UsersViewController: UIViewController, UITableViewDelegate, UITableV
         refreshControl.addTarget(self, action: #selector(load), for: .valueChanged)
         mainTableView.addSubview(refreshControl)
         
+        searchController.searchResultsUpdater = self
+        navigationItem.searchController = searchController
+
+        
         load()
     }
     
@@ -73,17 +89,29 @@ final class UsersViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return users.count
+        return usersFiltered.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellModel = users[indexPath.row]
+        let cellModel = usersFiltered[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: UserCell.identifier, for: indexPath) as! UserCell
         
         cell.configure(with: cellModel)
         return cell
     }
 
+}
+
+extension UsersViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text else { return }
+        if text.count == 0 {
+            usersFiltered = users
+        }else{
+            usersFiltered = users.filter { $0.name.contains(text) }
+        }
+        mainTableView.reloadData()
+    }
 }
 
 extension UsersViewController {
