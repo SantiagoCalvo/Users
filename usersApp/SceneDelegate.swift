@@ -27,7 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let userLoader = MainQueueDispatchDecorator(decoratee: RemoteUserLoader(url: usersURL, client: urlSessionHTTPClientWithCache))
         
-        let usersViewController = UsersViewController(loader: userLoader)
+        let usersViewController = UsersViewController(loader: userLoader) {_ in}
         
         let navigationController = UINavigationController(rootViewController: usersViewController)
         

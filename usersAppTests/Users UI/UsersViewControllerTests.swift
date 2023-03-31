@@ -107,12 +107,34 @@ class UsersViewControllerTests: XCTestCase {
         
         assertThat(sut, isRendering: [user0, user1])
     }
+    
+    func test_clickOnCell_callscallbackWithSelectedUser() {
+        let user0 = User(id: 1, name: "user", phone: "1234234", email: "any@email.com")
+        let user1 = User(id: 2, name: "ana", phone: "1234234", email: "any@email.com")
+        var selectedUsers = [User]()
+        let (sut, loader) = makeSUT(selectCell: { user in
+            selectedUsers.append(user)
+        })
+        
+        sut.loadViewIfNeeded()
+        
+        loader.completeUserLoading(with: [user0, user1], at: 0)
+        assertThat(sut, isRendering: [user0, user1])
+        
+        sut.simulateUserSelectCell(at: 0)
+        
+        XCTAssertEqual(selectedUsers, [user0])
+        
+        sut.simulateUserSelectCell(at: 1)
+        
+        XCTAssertEqual(selectedUsers, [user0, user1])
+    }
         
     //MARK: - helpers
     
-    private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: UsersViewController, loader: LoaderSpy) {
+    private func makeSUT(selectCell: @escaping (User) -> Void = {_ in}, file: StaticString = #filePath, line: UInt = #line) -> (sut: UsersViewController, loader: LoaderSpy) {
         let loader = LoaderSpy()
-        let sut = UsersViewController(loader: loader)
+        let sut = UsersViewController(loader: loader, selectedUser: selectCell)
         trackForMemoryLeaks(loader, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
         return (sut, loader)
@@ -187,6 +209,12 @@ private extension UsersViewController {
     
     func searchUser(_ userName: String) {
         searchController.searchBar.text = userName
+    }
+    
+    func simulateUserSelectCell(at row: Int = 0) {
+        let delegate = mainTableView.delegate
+        let index = IndexPath(row: row, section: 0)
+        delegate?.tableView?(mainTableView, didSelectRowAt: index)
     }
 }
 

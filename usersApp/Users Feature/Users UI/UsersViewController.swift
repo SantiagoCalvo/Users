@@ -40,8 +40,11 @@ final class UsersViewController: UIViewController, UITableViewDelegate, UITableV
     
     let loader: UsersLoader
     
-    init(loader: UsersLoader) {
+    let selectedUser: (User) -> Void
+    
+    init(loader: UsersLoader, selectedUser: @escaping (User) -> Void) {
         self.loader = loader
+        self.selectedUser = selectedUser
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -98,6 +101,10 @@ final class UsersViewController: UIViewController, UITableViewDelegate, UITableV
         
         cell.configure(with: cellModel)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedUser(usersFiltered[indexPath.row])
     }
 
 }
