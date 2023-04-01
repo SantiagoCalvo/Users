@@ -22,6 +22,9 @@
 		9A0DA52729D3E338000BBE8B /* usersAPIEndToEndTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0DA52629D3E338000BBE8B /* usersAPIEndToEndTests.swift */; };
 		9A0DA52E29D3E448000BBE8B /* URLSessionHTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0DA52D29D3E448000BBE8B /* URLSessionHTTPClient.swift */; };
 		9A0DA52F29D3E4B3000BBE8B /* XCTestCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0DA51A29D3D7D8000BBE8B /* XCTestCase+MemoryLeakTracking.swift */; };
+		9A16852729D7A89700CD496E /* PostsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A16852629D7A89700CD496E /* PostsViewControllerTests.swift */; };
+		9A16852929D7A8FA00CD496E /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A16852829D7A8FA00CD496E /* PostsViewController.swift */; };
+		9A16852B29D7AA6200CD496E /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A16852A29D7AA6200CD496E /* PostCell.swift */; };
 		9A5E4CEA29D6690C00C710D1 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5E4CE929D6690C00C710D1 /* UserCell.swift */; };
 		9A5E4CEC29D6695E00C710D1 /* UsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5E4CEB29D6695E00C710D1 /* UsersViewController.swift */; };
 		9A5E4CEF29D68DD200C710D1 /* RemotePostsLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5E4CEE29D68DD200C710D1 /* RemotePostsLoaderTests.swift */; };
@@ -66,6 +69,9 @@
 		9A0DA52429D3E338000BBE8B /* usersAppEndToEndTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = usersAppEndToEndTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A0DA52629D3E338000BBE8B /* usersAPIEndToEndTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = usersAPIEndToEndTests.swift; sourceTree = "<group>"; };
 		9A0DA52D29D3E448000BBE8B /* URLSessionHTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClient.swift; sourceTree = "<group>"; };
+		9A16852629D7A89700CD496E /* PostsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsViewControllerTests.swift; sourceTree = "<group>"; };
+		9A16852829D7A8FA00CD496E /* PostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
+		9A16852A29D7AA6200CD496E /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		9A5E4CE929D6690C00C710D1 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		9A5E4CEB29D6695E00C710D1 /* UsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersViewController.swift; sourceTree = "<group>"; };
 		9A5E4CEE29D68DD200C710D1 /* RemotePostsLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemotePostsLoaderTests.swift; sourceTree = "<group>"; };
@@ -145,6 +151,7 @@
 		9A0DA50329D3C0F3000BBE8B /* usersAppTests */ = {
 			isa = PBXGroup;
 			children = (
+				9A16852529D7A87100CD496E /* Posts UI */,
 				9A5E4CED29D68DBF00C710D1 /* Posts API */,
 				9A05874029D51420000F3CC0 /* Users UI */,
 				9A0DA51D29D3D951000BBE8B /* Common */,
@@ -225,6 +232,16 @@
 		9A16852429D7A80E00CD496E /* Posts UI */ = {
 			isa = PBXGroup;
 			children = (
+				9A16852829D7A8FA00CD496E /* PostsViewController.swift */,
+				9A16852A29D7AA6200CD496E /* PostCell.swift */,
+			);
+			path = "Posts UI";
+			sourceTree = "<group>";
+		};
+		9A16852529D7A87100CD496E /* Posts UI */ = {
+			isa = PBXGroup;
+			children = (
+				9A16852629D7A89700CD496E /* PostsViewControllerTests.swift */,
 			);
 			path = "Posts UI";
 			sourceTree = "<group>";
@@ -411,6 +428,8 @@
 				9A0DA52E29D3E448000BBE8B /* URLSessionHTTPClient.swift in Sources */,
 				9A5E4CF329D68E4200C710D1 /* PostsLoader.swift in Sources */,
 				9A5E4CF829D68F7900C710D1 /* RemotePostsLoader.swift in Sources */,
+				9A16852B29D7AA6200CD496E /* PostCell.swift in Sources */,
+				9A16852929D7A8FA00CD496E /* PostsViewController.swift in Sources */,
 				9A0DA51529D3D60A000BBE8B /* HTTPClient.swift in Sources */,
 				9A5E4CEA29D6690C00C710D1 /* UserCell.swift in Sources */,
 				9A5E4CEC29D6695E00C710D1 /* UsersViewController.swift in Sources */,
@@ -425,6 +444,7 @@
 			files = (
 				9A0DA50F29D3C24B000BBE8B /* RemoteUsersLoaderTests.swift in Sources */,
 				9A05874229D51434000F3CC0 /* UsersViewControllerTests.swift in Sources */,
+				9A16852729D7A89700CD496E /* PostsViewControllerTests.swift in Sources */,
 				9A0DA51F29D3D95C000BBE8B /* URLSessionHTTPClientTests.swift in Sources */,
 				9A5E4CEF29D68DD200C710D1 /* RemotePostsLoaderTests.swift in Sources */,
 				9A0DA51B29D3D7D8000BBE8B /* XCTestCase+MemoryLeakTracking.swift in Sources */,
