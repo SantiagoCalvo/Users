@@ -25,6 +25,10 @@
 		9A16852729D7A89700CD496E /* PostsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A16852629D7A89700CD496E /* PostsViewControllerTests.swift */; };
 		9A16852929D7A8FA00CD496E /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A16852829D7A8FA00CD496E /* PostsViewController.swift */; };
 		9A16852B29D7AA6200CD496E /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A16852A29D7AA6200CD496E /* PostCell.swift */; };
+		9A16852E29D7CC4100CD496E /* PostsViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A16852D29D7CC4100CD496E /* PostsViewControllerFactory.swift */; };
+		9A16853029D7CC7400CD496E /* UserViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A16852F29D7CC7400CD496E /* UserViewControllerFactory.swift */; };
+		9A16853329D7CC9E00CD496E /* MainQueueDispatchDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A16853229D7CC9E00CD496E /* MainQueueDispatchDecorator.swift */; };
+		9A16853529D7CCB900CD496E /* MainQueueDispatchDecoratorPosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A16853429D7CCB900CD496E /* MainQueueDispatchDecoratorPosts.swift */; };
 		9A5E4CEA29D6690C00C710D1 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5E4CE929D6690C00C710D1 /* UserCell.swift */; };
 		9A5E4CEC29D6695E00C710D1 /* UsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5E4CEB29D6695E00C710D1 /* UsersViewController.swift */; };
 		9A5E4CEF29D68DD200C710D1 /* RemotePostsLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5E4CEE29D68DD200C710D1 /* RemotePostsLoaderTests.swift */; };
@@ -72,6 +76,10 @@
 		9A16852629D7A89700CD496E /* PostsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsViewControllerTests.swift; sourceTree = "<group>"; };
 		9A16852829D7A8FA00CD496E /* PostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
 		9A16852A29D7AA6200CD496E /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
+		9A16852D29D7CC4100CD496E /* PostsViewControllerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsViewControllerFactory.swift; sourceTree = "<group>"; };
+		9A16852F29D7CC7400CD496E /* UserViewControllerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewControllerFactory.swift; sourceTree = "<group>"; };
+		9A16853229D7CC9E00CD496E /* MainQueueDispatchDecorator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainQueueDispatchDecorator.swift; sourceTree = "<group>"; };
+		9A16853429D7CCB900CD496E /* MainQueueDispatchDecoratorPosts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainQueueDispatchDecoratorPosts.swift; sourceTree = "<group>"; };
 		9A5E4CE929D6690C00C710D1 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		9A5E4CEB29D6695E00C710D1 /* UsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersViewController.swift; sourceTree = "<group>"; };
 		9A5E4CEE29D68DD200C710D1 /* RemotePostsLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemotePostsLoaderTests.swift; sourceTree = "<group>"; };
@@ -136,6 +144,7 @@
 		9A0DA4E829D3C0B4000BBE8B /* usersApp */ = {
 			isa = PBXGroup;
 			children = (
+				9A16852C29D7CC2F00CD496E /* Composition */,
 				9A5E4CF029D68E1700C710D1 /* Posts Feature */,
 				9A0DA51C29D3D939000BBE8B /* Common */,
 				9A0DA50B29D3C139000BBE8B /* Users Feature */,
@@ -244,6 +253,33 @@
 				9A16852629D7A89700CD496E /* PostsViewControllerTests.swift */,
 			);
 			path = "Posts UI";
+			sourceTree = "<group>";
+		};
+		9A16852C29D7CC2F00CD496E /* Composition */ = {
+			isa = PBXGroup;
+			children = (
+				9A16853629D7CCD900CD496E /* Factories */,
+				9A16853129D7CC8C00CD496E /* Decorators */,
+			);
+			path = Composition;
+			sourceTree = "<group>";
+		};
+		9A16853129D7CC8C00CD496E /* Decorators */ = {
+			isa = PBXGroup;
+			children = (
+				9A16853229D7CC9E00CD496E /* MainQueueDispatchDecorator.swift */,
+				9A16853429D7CCB900CD496E /* MainQueueDispatchDecoratorPosts.swift */,
+			);
+			path = Decorators;
+			sourceTree = "<group>";
+		};
+		9A16853629D7CCD900CD496E /* Factories */ = {
+			isa = PBXGroup;
+			children = (
+				9A16852F29D7CC7400CD496E /* UserViewControllerFactory.swift */,
+				9A16852D29D7CC4100CD496E /* PostsViewControllerFactory.swift */,
+			);
+			path = Factories;
 			sourceTree = "<group>";
 		};
 		9A5E4CE829D6690100C710D1 /* Users UI */ = {
@@ -421,13 +457,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A16853029D7CC7400CD496E /* UserViewControllerFactory.swift in Sources */,
 				9A0DA51229D3C687000BBE8B /* UsersLoader.swift in Sources */,
 				9A5E4CF629D68EA500C710D1 /* Post.swift in Sources */,
 				9A0DA50D29D3C154000BBE8B /* User.swift in Sources */,
 				9A0DA51729D3D627000BBE8B /* RemoteUserLoader.swift in Sources */,
+				9A16853329D7CC9E00CD496E /* MainQueueDispatchDecorator.swift in Sources */,
 				9A0DA52E29D3E448000BBE8B /* URLSessionHTTPClient.swift in Sources */,
+				9A16852E29D7CC4100CD496E /* PostsViewControllerFactory.swift in Sources */,
 				9A5E4CF329D68E4200C710D1 /* PostsLoader.swift in Sources */,
 				9A5E4CF829D68F7900C710D1 /* RemotePostsLoader.swift in Sources */,
+				9A16853529D7CCB900CD496E /* MainQueueDispatchDecoratorPosts.swift in Sources */,
 				9A16852B29D7AA6200CD496E /* PostCell.swift in Sources */,
 				9A16852929D7A8FA00CD496E /* PostsViewController.swift in Sources */,
 				9A0DA51529D3D60A000BBE8B /* HTTPClient.swift in Sources */,
